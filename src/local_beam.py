@@ -12,6 +12,10 @@ def generate_product():
         rt.append(''.join(map(str, x)))
     return rt
 
+def generate_simple():
+    zero = [0]*n
+    return ''.join(map(str, zero))
+
 def evaluate(solution: str):
     totalV = 0
     totalW = 0
@@ -39,13 +43,15 @@ def generate_neighborhood(beam):
         neighborhood.append(''.join(neighbor))
     return neighborhood
     
-def LocalBeam(k: int, max_iter=1000, generate="random"): 
+def LocalBeam(k: int, max_iter=1000, generate="simple"): 
     if (generate=="random"):
         #randomly
         states = [generate_random(size = n) for _ in range(k)]
-    else:
+    elif generate == "product":
         #product
         states = generate_product() # for _ in range(2**n)
+    else:
+        states = [generate_simple()]
     
     initial_solution = max(states, key=evaluate)
     
@@ -85,7 +91,7 @@ def LocalBeam(k: int, max_iter=1000, generate="random"):
 # maxTotalV, maxKnapsack = LocalBeam(k = 2) #nonclass
 file = input("Input the number of input file: ")
 W, m, w, v, c, n = read_data_from_file(file)
-maxTotalV, maxKnapsack = LocalBeam(k = 2, generate="random")
+maxTotalV, maxKnapsack = LocalBeam(k = 2)
 
 print(maxTotalV)
 print(maxKnapsack)

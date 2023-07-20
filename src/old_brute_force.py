@@ -1,6 +1,11 @@
 from io_data import *
 
-knapsack, maxKnapsack, totalW, totalV, maxTotalV, c_set = 0, 0, 0, 0, 0, 0
+W, m, w, v, c, n = read_data_from_file()
+
+knapsack = [0] * n
+maxKnapsack = [0] * n
+totalW, totalV, maxTotalV = 0, 0, 0
+c_set = [0]
 
 
 def brute_force(i, getItem=False):
@@ -30,13 +35,5 @@ def brute_force(i, getItem=False):
         brute_force(i + 1)
 
 
-if __name__ == "__main__":
-    num_files = int(input("Enter number of input files: "))
-    for i in range(num_files):
-        W, m, w, v, c, n = read_data_from_file(i + 1)
-        knapsack = [0] * n
-        maxKnapsack = [0] * n
-        totalW, totalV, maxTotalV = 0, 0, 0
-        c_set = [0]
-        brute_force(-1)
-        write_output_to_file(i + 1, maxTotalV, maxKnapsack)
+brute_force(-1)
+write_output_to_file(totalV, maxKnapsack)

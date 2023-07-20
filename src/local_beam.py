@@ -81,11 +81,10 @@ def LocalBeam(k: int, max_iter=1000, generate="simple"):
     for item in chosen_items:
         arr[item] = 1
     
-    if (best_value[0] == m):
-        # return best_value, arr #non_class
-        return best_value[1], arr #class
+    if (best_value[0] < m):
+        return 0, [0]*n  #class
     
-    return 0, [0]*n
+    return best_value[1], arr
     
 
 # maxTotalV, maxKnapsack = LocalBeam(k = 2) #nonclass

@@ -95,4 +95,4 @@ maxTotalV, maxKnapsack = LocalBeam(k = 2)
 
 print(maxTotalV)
 print(maxKnapsack)
-write_output_to_file(maxTotalV, maxKnapsack)
+write_output_to_file(file, maxTotalV, maxKnapsack)

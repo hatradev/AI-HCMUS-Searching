@@ -1,4 +1,4 @@
-from read_data import *
+from io_data import *
 import itertools
 import numpy as np
 
@@ -58,7 +58,7 @@ def generate_neighborhood(beam):
         neighborhood.append(''.join(neighbor))
     return neighborhood
     
-def LocalBeam(k: int, max_iter=10000, generate="random"): 
+def LocalBeam(k: int, max_iter=1000, generate="random"): 
     if (generate=="random"):
         #randomly
         states = [generate_random(size = n) for _ in range(k)]
@@ -73,7 +73,9 @@ def LocalBeam(k: int, max_iter=10000, generate="random"):
     best_value = evaluate(best_solution)
     arr = [0] * n
 
-    for _ in range(max_iter):
+    loopy = max_iter
+    
+    while loopy:
         neighborhood = []
         for beam in beams:
             neighborhood += generate_neighborhood(beam)
@@ -83,19 +85,24 @@ def LocalBeam(k: int, max_iter=10000, generate="random"):
         if new_best_value > best_value:
             best_solution = new_best_solution
             best_value = new_best_value
+            loopy = max_iter
+        else:
+            loopy -= 1
 
     chosen_items = [i for i in range(n) if best_solution[i] == '1']
     for item in chosen_items:
         arr[item] = 1
     
-    # return best_value, arr #non_class
-    return best_value[1], arr, best_value[0] #class
+    if (best_value[0] == m):
+        # return best_value, arr #non_class
+        return best_value[1], arr #class
+    
+    return 0, maxKnapsack
     
 
 # maxTotalV, maxKnapsack = LocalBeam(k = 2) #nonclass
-
-maxTotalV, maxKnapsack, numclass = LocalBeam(k = 4)
+read_data_from_file(5)
+maxTotalV, maxKnapsack = LocalBeam(k = 4)
 
 print(maxTotalV)
 print(maxKnapsack)
-print(numclass == m)

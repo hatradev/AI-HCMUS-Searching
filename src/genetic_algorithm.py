@@ -1,4 +1,4 @@
-from read_data import *
+from io_data import *
 import random
 import numpy as np
 
@@ -55,12 +55,12 @@ def value_of(individual):
     return np.dot(individual, v)
 
 
+# Calculate number of class of an individual
 def class_of(individual):
     c_set = np.array(individual) * np.array(c)
     c_set = np.unique(c_set)
     if c_set[0] == 0:
         c_set = c_set[1:]
-    # print(c_set)
     return len(c_set)
 
 
@@ -68,7 +68,6 @@ def class_of(individual):
 def init_population(num_pop):
     population = []
     min_individuals = [get_min_individual_of_class(k + 1) for k in range(m)]
-    # print(min_individuals)
     for i in range(num_pop):
         individual = create_individual(min_individuals)
         if individual:
@@ -125,7 +124,9 @@ def get_best_individual(population):
 
 
 # Genetic algorithm
-def genetic_algo():
+def genetic_algo(x):
+    global W, m, w, v, c, n
+    W, m, w, v, c, n = read_data_from_file(x)
     num_pop = 100
     generations = 1000
     mutation_rate = 0.4
@@ -136,13 +137,14 @@ def genetic_algo():
     result_individual = []
     pre_best_value = 0
     res_count = 0
+    solution = []
     if check_invalid_class():
         population = init_population(num_pop)
         if not population:
-            print("No solution")
+            write_output_to_file(x, {"NO SOLUTION", []})
             return
     else:
-        print("No solution")
+        write_output_to_file(x, {"NO SOLUTION", []})
         return
 
     k = num_pop // 4
@@ -167,7 +169,7 @@ def genetic_algo():
             mutation_rate = 0.4
             count = 0
             res_count = 0
-        print(i, result_value, result_individual)
+        # print(i, result_value, result_individual)
         if count >= 20:
             mutation_rate *= 2
             count = 0
@@ -180,7 +182,10 @@ def genetic_algo():
             break
         if best_value == result_value:
             res_count += 1
-    # print(result_value, result_individual)
+    write_output_to_file(x, result_value, result_individual)
 
 
-genetic_algo()
+if __name__ == "__main__":
+    num_files = int(input("Enter number of input files: "))
+    for i in range(num_files):
+        genetic_algo(i + 1)

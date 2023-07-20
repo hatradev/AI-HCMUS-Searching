@@ -1,4 +1,11 @@
-from read_data import *
+from io_data import *
+
+W, m, w, v, c, n, x = read_data_from_file()
+
+knapsack = [0] * n
+maxKnapsack = [0] * n
+totalW, totalV, maxTotalV = 0, 0, 0
+c_set = [0]
 
 
 def brute_force(i, getItem=False):
@@ -29,4 +36,4 @@ def brute_force(i, getItem=False):
 
 
 brute_force(-1)
-print(maxTotalV, maxKnapsack)
+write_output_to_file(totalV, maxKnapsack)

@@ -79,12 +79,14 @@ def LocalBeam(k: int, max_iter=1000, generate="random"):
         # return best_value, arr #non_class
         return best_value[1], arr #class
     
-    return 0, maxKnapsack
+    return 0, [0]*n
     
 
 # maxTotalV, maxKnapsack = LocalBeam(k = 2) #nonclass
-W, m, w, v, c, n = read_data_from_file(1)
+file = input("Input the number of input file: ")
+W, m, w, v, c, n = read_data_from_file(file)
 maxTotalV, maxKnapsack = LocalBeam(k = 2, generate="random")
 
 print(maxTotalV)
 print(maxKnapsack)
+write_output_to_file(maxTotalV, maxKnapsack)

@@ -15,7 +15,7 @@ def upper_bound(index, current_weight, current_value):
     return total_value
 
 def knapSack_recursive_BNB(current_value, current_weight, index, selected_items, max_value, max_items):
-    if index == n or max_iters == 1000:
+    if index == n:
         if current_value > max_value: return current_value, selected_items[:]
         return max_value, max_items
 
@@ -43,11 +43,10 @@ def knapSack_recursive_BNB(current_value, current_weight, index, selected_items,
                 if current_weight + weight <= Total_weight and selected_items[i] == 0:
                     selected_items[i] = 1
                     selected_class[class_id] = 1
-                    max_value, max_items = knapSack_recursive_BNB(current_value + value, current_weight + weight, i + 1, selected_items, max_value, max_items, max_iters + 1)
+                    max_value, max_items = knapSack_recursive_BNB(current_value + value, current_weight + weight, i + 1, selected_items, max_value, max_items)
                     selected_items[i] = 0
                     selected_class[class_id] = 0
                     break   
-    if not all(selected_class): return 0,[0]*n    
     return max_value, max_items
 
 input_number_of_files = int(input("Enter number of input files: "))
@@ -67,6 +66,9 @@ for i in range(input_number_of_files):
     max_items = [0 for i in range(n)]
     selected_items = [0 for i in range(n)]
     max_value, max_items = knapSack_recursive_BNB(0,0,0,selected_items,max_value,max_items)
+    if not all(selected_class):
+        max_value = 0
+        max_items = [0] * n
     file.close()
     file = open(f"../outputs/OUTPUT_{i+1}.txt","w")
     file.write(str(max_value))

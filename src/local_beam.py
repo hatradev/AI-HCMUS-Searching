@@ -2,33 +2,14 @@ from io_data import *
 import itertools
 import numpy as np
 
-def evaluateV(solution):
-    totalV = 0
-    totalW = 0
-    for i in range(n):
-        if solution[i] == 1:
-            totalV += v[i]
-            totalW += w[i]
-    if totalW > W:
-        totalV = 0
-
-    return totalV #class
-
 def generate_random(size = n):
     state = np.random.randint(2, size=size)
     return ''.join(map(str, state))
 
-def generate_product(numOfstate: int, size = n):
+def generate_product():
     rt = []
-    for x in itertools.product([1, 0], repeat=size):
-        if numOfstate:
-            valueX = evaluateV(x)
-            if valueX == 0:
-                break
-            rt.append(''.join(map(str, x)))
-            numOfstate -= 1
-        else:
-            break
+    for x in itertools.product([1, 0], repeat=n):
+        rt.append(''.join(map(str, x)))
     return rt
 
 def evaluate(solution: str):
@@ -64,7 +45,7 @@ def LocalBeam(k: int, max_iter=1000, generate="random"):
         states = [generate_random(size = n) for _ in range(k)]
     else:
         #product
-        states = generate_product(numOfstate=k) # for _ in range(2**n)
+        states = generate_product() # for _ in range(2**n)
     
     initial_solution = max(states, key=evaluate)
     
@@ -82,6 +63,7 @@ def LocalBeam(k: int, max_iter=1000, generate="random"):
         beams = sorted(neighborhood, key=evaluate, reverse=True)[:k]
         new_best_solution = max(beams, key=evaluate)
         new_best_value = evaluate(new_best_solution)
+        
         if new_best_value > best_value:
             best_solution = new_best_solution
             best_value = new_best_value
@@ -101,8 +83,8 @@ def LocalBeam(k: int, max_iter=1000, generate="random"):
     
 
 # maxTotalV, maxKnapsack = LocalBeam(k = 2) #nonclass
-read_data_from_file(5)
-maxTotalV, maxKnapsack = LocalBeam(k = 4)
+W, m, w, v, c, n = read_data_from_file(1)
+maxTotalV, maxKnapsack = LocalBeam(k = 2, generate="random")
 
 print(maxTotalV)
 print(maxKnapsack)

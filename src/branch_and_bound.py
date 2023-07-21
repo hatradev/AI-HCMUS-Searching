@@ -65,11 +65,11 @@ for i in range(input_number_of_files):
     signal.signal(signal.SIGALRM, signal_handler)
     signal.alarm(60 if i + 1 <= 6 else 120)
     tf = True    
-    if max(Items_class) != Class_number:
-        max_value = 0
-        max_items = [0] * n
     try:
         max_value, max_items = knapSack_recursive_BNB(0,0,0,selected_items,max_value,max_items)
+        if max(Items_class) != Class_number:
+            max_value = 0
+            max_items = [0] * n        
         write_output_to_file(i + 1, max_value, max_items, True)
     except TimeoutError:
         et = time.time()

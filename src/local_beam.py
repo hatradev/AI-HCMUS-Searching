@@ -43,7 +43,7 @@ def generate_neighborhood(beam):
         neighborhood.append(''.join(neighbor))
     return neighborhood
     
-def LocalBeam(k: int, max_iter=1000, generate="simple"): 
+def LocalBeam(k: int, max_iter=100, generate="simple"): 
     if (generate=="random"):
         #randomly
         states = [generate_random(size = n) for _ in range(k)]
@@ -61,9 +61,8 @@ def LocalBeam(k: int, max_iter=1000, generate="simple"):
     arr = [0] * n
 
     loopy = max_iter
-    
+    neighborhood = []
     while loopy:
-        neighborhood = []
         for beam in beams:
             neighborhood += generate_neighborhood(beam)
         beams = sorted(neighborhood, key=evaluate, reverse=True)[:k]

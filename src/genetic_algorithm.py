@@ -149,14 +149,14 @@ def genetic_algo(x):
         write_output_to_file(x, 0, [0] * n, True)
         return
 
-    k = num_pop // 4
+    k = num_pop // 2
     for i in range(generations):
         new_population = []
         population.sort(key=fitness_of, reverse=True)
         new_population.extend(population[:k])
         fitness_scores = fitness_scores_of(population)
         fitness_ratio = fitness_scores / np.sum(fitness_scores)
-        for _ in range(3 * num_pop // 8):
+        for _ in range(num_pop // 2):
             # Choose parents for crossovering to make two new children
             parents = selection(population, fitness_ratio)
             child1, child2 = crossover(parents[0], parents[1])
@@ -193,7 +193,7 @@ def signal_handler(signum, frame):
 
 if __name__ == "__main__":
     num_files = int(input("Enter number of input files: "))
-    for i in range(1):
+    for i in range(num_files):
         st = time.time()
         signal.signal(signal.SIGALRM, signal_handler)
         signal.alarm(60 if i + 1 <= 6 else 120)
@@ -206,5 +206,5 @@ if __name__ == "__main__":
             tf = False
             write_output_to_file(i + 1, 0, [], False)
         print(
-            f"Execution time of Brute-force for input {i + 1} with {tf}: {et - st} seconds"
+            f"Execution time of Genetic algorithm for input {i + 1} with {tf}: {et - st} seconds"
         )

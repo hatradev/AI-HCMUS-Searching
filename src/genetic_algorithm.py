@@ -1,6 +1,8 @@
 from io_data import *
 import random
 import numpy as np
+import signal
+import time
 
 
 def check_invalid_class():
@@ -137,13 +139,14 @@ def genetic_algo(x):
     result_individual = []
     pre_best_value = 0
     res_count = 0
+    res_itr = 200 if n <= 500 else 100
     if check_invalid_class():
         population = init_population(num_pop)
         if not population:
-            write_output_to_file(x, 0, [0] * n)
+            write_output_to_file(x, 0, [0] * n, True)
             return
     else:
-        write_output_to_file(x, 0, [0] * n)
+        write_output_to_file(x, 0, [0] * n, True)
         return
 
     k = num_pop // 4
@@ -169,7 +172,7 @@ def genetic_algo(x):
             count = 0
             res_count = 0
         # print(i, result_value, result_individual)
-        if count >= 20:
+        if count >= 30:
             mutation_rate *= 2
             count = 0
         if best_value == pre_best_value:
@@ -177,14 +180,31 @@ def genetic_algo(x):
         elif best_value > pre_best_value:
             mutation_rate = 0.4
         pre_best_value = best_value
-        if res_count >= 200:
+        if res_count >= res_itr:
             break
         if best_value == result_value:
             res_count += 1
-    write_output_to_file(x, result_value, result_individual)
+    write_output_to_file(x, result_value, result_individual, True)
+
+
+def signal_handler(signum, frame):
+    raise Exception("Timed out!")
 
 
 if __name__ == "__main__":
     num_files = int(input("Enter number of input files: "))
-    for i in range(num_files):
-        genetic_algo(i + 1)
+    for i in range(1):
+        st = time.time()
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(60 if i + 1 <= 6 else 120)
+        tf = True
+        try:
+            genetic_algo(i + 1)
+            et = time.time()
+        except Exception:
+            et = time.time()
+            tf = False
+            write_output_to_file(i + 1, 0, [], False)
+        print(
+            f"Execution time of Brute-force for input {i + 1} with {tf}: {et - st} seconds"
+        )

@@ -58,7 +58,7 @@ input_number_of_files = int(input("Enter number of input files: "))
 for i in range(input_number_of_files):
     Total_weight, Class_number, Items_weight, Items_value, Items_class, n = read_data_from_file(i + 1)
     max_value = 0
-    selected_class = [0 for i in range(Class_number)]
+    selected_class = [1 for i in range(Class_number)]
     max_items = [0 for i in range(n)]
     selected_items = [0 for i in range(n)]
     st = time.time()
@@ -67,7 +67,7 @@ for i in range(input_number_of_files):
     tf = True    
     try:
         max_value, max_items = knapSack_recursive_BNB(0,0,0,selected_items,max_value,max_items)
-        if max(Items_class) != Class_number:
+        if max(Items_class) != Class_number or all(selected_class):
             max_value = 0
             max_items = [0] * n        
         write_output_to_file(i + 1, max_value, max_items, True)

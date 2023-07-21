@@ -114,10 +114,11 @@ for i in range(input_number_of_files):
             max_value = 0
             max_items = [0] * n
         write_output_to_file(i + 1, max_value, max_items, True)
-    except TimeoutError:
+        et = time.time()
+    except Exception:
         et = time.time()
         tf = False
         write_output_to_file(i + 1, max_value, max_items, False)
     print(
-        f"Execution time of Brute-force for input {i + 1} with {tf}: {et - st} seconds"
+        f"Execution time of Branch and Bound for input {i + 1} with {tf}: {et - st} seconds"
     )

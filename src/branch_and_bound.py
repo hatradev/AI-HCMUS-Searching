@@ -51,7 +51,7 @@ def knapSack_recursive_BNB(current_value, current_weight, index, selected_items,
 
 input_number_of_files = int(input("Enter number of input files: "))
 for i in range(input_number_of_files):
-    file = open(f"../datasets/INPUT_{i+1}.txt")
+    file = open(f"./datasets/INPUT_{i+1}.txt")
     Total_weight = int(file.readline())
     Class_number = int(file.readline())
     Items_weight = file.readline().split(', ')
@@ -66,11 +66,11 @@ for i in range(input_number_of_files):
     max_items = [0 for i in range(n)]
     selected_items = [0 for i in range(n)]
     max_value, max_items = knapSack_recursive_BNB(0,0,0,selected_items,max_value,max_items)
-    if not all(selected_class):
+    if max(Items_class) != Class_number:
         max_value = 0
         max_items = [0] * n
     file.close()
-    file = open(f"../outputs/OUTPUT_{i+1}.txt","w")
+    file = open(f"./outputs/OUTPUT_{i+1}.txt","w")
     file.write(str(max_value))
     file.write("\n")
     for i in range(n):

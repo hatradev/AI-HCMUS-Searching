@@ -1,4 +1,7 @@
 from io_data import *
+import signal
+import time
+
 
 knapsack, maxKnapsack, totalW, totalV, maxTotalV, c_set = 0, 0, 0, 0, 0, 0
 
@@ -30,6 +33,10 @@ def brute_force(i, getItem=False):
         brute_force(i + 1)
 
 
+def signal_handler(signum, frame):
+    raise Exception("Timed out!")
+
+
 if __name__ == "__main__":
     num_files = int(input("Enter number of input files: "))
     for i in range(num_files):
@@ -38,5 +45,18 @@ if __name__ == "__main__":
         maxKnapsack = [0] * n
         totalW, totalV, maxTotalV = 0, 0, 0
         c_set = [0]
-        brute_force(-1)
-        write_output_to_file(i + 1, maxTotalV, maxKnapsack)
+        st = time.time()
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(60 if i + 1 <= 6 else 120)
+        tf = True
+        try:
+            brute_force(-1)
+            et = time.time()
+            write_output_to_file(i + 1, maxTotalV, maxKnapsack, True)
+        except Exception:
+            et = time.time()
+            tf = False
+            write_output_to_file(i + 1, maxTotalV, maxKnapsack, False)
+        print(
+            f"Execution time of Brute-force for input {i + 1} with {tf}: {et - st} seconds"
+        )

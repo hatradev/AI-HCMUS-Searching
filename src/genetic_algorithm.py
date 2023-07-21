@@ -137,14 +137,13 @@ def genetic_algo(x):
     result_individual = []
     pre_best_value = 0
     res_count = 0
-    solution = []
     if check_invalid_class():
         population = init_population(num_pop)
         if not population:
-            write_output_to_file(x, {"NO SOLUTION", []})
+            write_output_to_file(x, 0, [0] * n)
             return
     else:
-        write_output_to_file(x, {"NO SOLUTION", []})
+        write_output_to_file(x, 0, [0] * n)
         return
 
     k = num_pop // 4

@@ -16,8 +16,14 @@ def read_data_from_file(x):
     return W, m, w, v, c, n
 
 
-def write_output_to_file(x, max_value, knapsack):
+def write_output_to_file(x, max_value, knapsack, valid):
     file = open(f"../outputs/OUTPUT_{x}.txt", "w")
+    if not valid:
+        file.write("RUN OUT OF LIMITED TIME")
+        return
+    if max_value == 0:
+        file.write("NO SOLUTION")
+        return
     file.write(str(max_value))
     file.write("\n")
     file.write(", ".join(map(str, knapsack)))

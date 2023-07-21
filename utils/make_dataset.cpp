@@ -17,7 +17,7 @@ int main() {
             fout << rand() % 1000 + 1 << endl;
             fout << m << endl;
         } else {
-            n = rand() % 951 + 50;
+            n = rand() % 100 + 50;
             m = rand() % 6 + 5;
             fout << rand() % 10000 + 1 << endl;
             fout << m << endl;
